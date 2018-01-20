@@ -4,133 +4,91 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Floor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Floor controller.
- *
- * @Route("floor")
- */
+
 class FloorController extends Controller
 {
+
     /**
-     * Lists all floor entities.
+     * @ApiDoc(
+     *    section = "Floor",
+     *    description="Lists all floor entities."
+     * )
      *
-     * @Route("/", name="floor_index")
-     * @Method("GET")
+     *
+     * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"floor"})
+     * @Rest\Get("/floors")
      */
-    public function indexAction()
+    public function getFloorsAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $floors = $em->getRepository('AppBundle:Floor')->findAll();
+        return $em->getRepository('AppBundle:Floor')->findAll();
 
-        return $this->render('floor/index.html.twig', array(
-            'floors' => $floors,
-        ));
     }
 
     /**
-     * Creates a new floor entity.
+     * @ApiDoc(
+     *    section = "Floor",
+     *    description="Creates a new floor entity.",
+     *    input={
+     *      "class" = "AppBundle\Form\FloorType",
+     *      "name" = ""
+     *    },
+     *    output= {
+     *      "class" = "Floor",
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *      "groups"={""}
+     *     },
+     *    responseMap={
+     *         200 = {"class"=Floor::class, "groups"={}},
+     *         400 = {"class"=FloorType::class, "form_errors"=true, "name" = ""}
+     *    },
+     *    statusCodes={
+     *         201="Success",
+     *         400="Form error",
+     *         500="Server error"
+     *     }
+     * )
      *
-     * @Route("/new", name="floor_new")
-     * @Method({"GET", "POST"})
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"floor"})
+     * @Rest\Post("/floors")
      */
-    public function newAction(Request $request)
+    public function postFloorAction(Request $request)
     {
         $floor = new Floor();
         $form = $this->createForm('AppBundle\Form\FloorType', $floor);
-        $form->handleRequest($request);
-
+        $form->submit($request->request->all());
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($floor);
             $em->flush();
 
-            return $this->redirectToRoute('floor_show', array('id' => $floor->getId()));
+            return $floor;
+        } else {
+            return $form;
         }
-
-        return $this->render('floor/new.html.twig', array(
-            'floor' => $floor,
-            'form' => $form->createView(),
-        ));
     }
 
     /**
-     * Finds and displays a floor entity.
+     * @ApiDoc(
+     *    section = "Floor",
+     *    description="Finds and displays a floor entity"
+     * )
      *
-     * @Route("/{id}", name="floor_show")
-     * @Method("GET")
+     *
+     * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"floor"})
+     * @Rest\Get("/floors/{id}")
      */
-    public function showAction(Floor $floor)
+    public function getFloorAction(Request $request)
     {
-        $deleteForm = $this->createDeleteForm($floor);
-
-        return $this->render('floor/show.html.twig', array(
-            'floor' => $floor,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing floor entity.
-     *
-     * @Route("/{id}/edit", name="floor_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Floor $floor)
-    {
-        $deleteForm = $this->createDeleteForm($floor);
-        $editForm = $this->createForm('AppBundle\Form\FloorType', $floor);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('floor_edit', array('id' => $floor->getId()));
-        }
-
-        return $this->render('floor/edit.html.twig', array(
-            'floor' => $floor,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Deletes a floor entity.
-     *
-     * @Route("/{id}", name="floor_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, Floor $floor)
-    {
-        $form = $this->createDeleteForm($floor);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($floor);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('floor_index');
-    }
-
-    /**
-     * Creates a form to delete a floor entity.
-     *
-     * @param Floor $floor The floor entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Floor $floor)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('floor_delete', array('id' => $floor->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $em = $this->getDoctrine()->getManager();
+        return $em->getRepository('AppBundle:Floor')->findOneBy(
+            array("id" => $request->get('id'))
+        );
     }
 }

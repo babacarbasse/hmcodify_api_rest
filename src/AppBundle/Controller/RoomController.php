@@ -4,133 +4,91 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Room;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 
-/**
- * Room controller.
- *
- * @Route("room")
- */
+
 class RoomController extends Controller
 {
+
     /**
-     * Lists all room entities.
+     * @ApiDoc(
+     *    section = "Room",
+     *    description="Lists all room entities."
+     * )
      *
-     * @Route("/", name="room_index")
-     * @Method("GET")
+     *
+     * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"room"})
+     * @Rest\Get("/rooms")
      */
-    public function indexAction()
+    public function getRoomsAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $rooms = $em->getRepository('AppBundle:Room')->findAll();
+        return $em->getRepository('AppBundle:Room')->findAll();
 
-        return $this->render('room/index.html.twig', array(
-            'rooms' => $rooms,
-        ));
     }
 
     /**
-     * Creates a new room entity.
+     * @ApiDoc(
+     *    section = "Room",
+     *    description="Creates a new room entity.",
+     *    input={
+     *      "class" = "AppBundle\Form\RoomType",
+     *      "name" = ""
+     *    },
+     *    output= {
+     *      "class" = "Room",
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *      "groups"={""}
+     *     },
+     *    responseMap={
+     *         200 = {"class"=Room::class, "groups"={}},
+     *         400 = {"class"=RoomType::class, "form_errors"=true, "name" = ""}
+     *    },
+     *    statusCodes={
+     *         201="Success",
+     *         400="Form error",
+     *         500="Server error"
+     *     }
+     * )
      *
-     * @Route("/new", name="room_new")
-     * @Method({"GET", "POST"})
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"room"})
+     * @Rest\Post("/rooms")
      */
-    public function newAction(Request $request)
+    public function postRoomAction(Request $request)
     {
         $room = new Room();
         $form = $this->createForm('AppBundle\Form\RoomType', $room);
-        $form->handleRequest($request);
-
+        $form->submit($request->request->all());
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($room);
             $em->flush();
 
-            return $this->redirectToRoute('room_show', array('id' => $room->getId()));
+            return $room;
+        } else {
+            return $form;
         }
-
-        return $this->render('room/new.html.twig', array(
-            'room' => $room,
-            'form' => $form->createView(),
-        ));
     }
 
     /**
-     * Finds and displays a room entity.
+     * @ApiDoc(
+     *    section = "Room",
+     *    description="Finds and displays a room entity"
+     * )
      *
-     * @Route("/{id}", name="room_show")
-     * @Method("GET")
+     *
+     * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"room"})
+     * @Rest\Get("/rooms/{id}")
      */
-    public function showAction(Room $room)
+    public function getRoomAction(Request $request)
     {
-        $deleteForm = $this->createDeleteForm($room);
-
-        return $this->render('room/show.html.twig', array(
-            'room' => $room,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing room entity.
-     *
-     * @Route("/{id}/edit", name="room_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Room $room)
-    {
-        $deleteForm = $this->createDeleteForm($room);
-        $editForm = $this->createForm('AppBundle\Form\RoomType', $room);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('room_edit', array('id' => $room->getId()));
-        }
-
-        return $this->render('room/edit.html.twig', array(
-            'room' => $room,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Deletes a room entity.
-     *
-     * @Route("/{id}", name="room_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, Room $room)
-    {
-        $form = $this->createDeleteForm($room);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($room);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('room_index');
-    }
-
-    /**
-     * Creates a form to delete a room entity.
-     *
-     * @param Room $room The room entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Room $room)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('room_delete', array('id' => $room->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $em = $this->getDoctrine()->getManager();
+        return $em->getRepository('AppBundle:Room')->findOneBy(
+            array("id" => $request->get('id'))
+        );
     }
 }

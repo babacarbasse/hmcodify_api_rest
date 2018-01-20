@@ -60,7 +60,7 @@ class CorridorController extends Controller
     {
         $corridor = new Corridor();
         $form = $this->createForm('AppBundle\Form\CorridorType', $corridor);
-        $form->handleRequest($request);
+        $form->submit($request->request->all());
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -85,8 +85,8 @@ class CorridorController extends Controller
      */
     public function getCorridorAction(Request $request)
     {
-        $orm = $this->getDoctrine()->getManager();
-        return $orm->getRepository('AppBundle:Corridor')->findOneBy(
+        $em = $this->getDoctrine()->getManager();
+        return $em->getRepository('AppBundle:Corridor')->findOneBy(
             array("id" => $request->get('id'))
         );
     }
