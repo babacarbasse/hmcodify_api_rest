@@ -1,3 +1,7 @@
+app_codification:
+    resource: "@AppBundle/Controller/CodificationController.php"
+    type:     rest
+
 app_has_constraint:
     resource: "@AppBundle/Controller/HasConstraintController.php"
     type:     rest

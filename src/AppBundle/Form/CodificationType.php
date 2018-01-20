@@ -6,25 +6,23 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class HasConstraintType extends AbstractType
+class CodificationType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('genderOccupation')
-            ->add('optionOccupation')
-            ->add('departementOccupation')
-            ->add('classLevelOccupation');
-    }/**
+        $builder->add('dateCodification');
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\HasConstraint',
+            'data_class' => 'AppBundle\Entity\Codification',
             'csrf_protection' => false,
             'allow_extra_fields' => true
         ));
@@ -35,7 +33,7 @@ class HasConstraintType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_hasconstraint';
+        return 'appbundle_codification';
     }
 
 
