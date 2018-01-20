@@ -13,14 +13,19 @@ class CorridorType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('description')->add('floor');
+        $builder
+            ->add('title')
+            ->add('description')
+            ->add('floor');
     }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Corridor'
+            'data_class' => 'AppBundle\Entity\Corridor',
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ));
     }
 

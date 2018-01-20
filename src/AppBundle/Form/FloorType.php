@@ -13,14 +13,19 @@ class FloorType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('description')->add('number')->add('building');
+        $builder
+            ->add('description')
+            ->add('number')
+            ->add('building');
     }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Floor'
+            'data_class' => 'AppBundle\Entity\Floor',
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ));
     }
 
