@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="88f75c7b-a786-4ba1-be38-7c3524f5581e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/BuildingController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/BuildingController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AppBundle/Controller/CorridorController.php" afterPath="$PROJECT_DIR$/src/AppBundle/Controller/CorridorController.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,11 +41,9 @@
       <file leaf-file-name="CorridorController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/CorridorController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="92" column="5" lean-forward="false" selection-start-line="92" selection-start-column="5" selection-end-line="92" selection-end-column="5" />
-              <folding>
-                <element signature="e#40#70#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="108">
+              <caret line="6" column="45" lean-forward="false" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -285,12 +282,12 @@
       <option name="presentableId" value="Default" />
       <updated>1516408342160</updated>
       <workItem from="1516408345548" duration="1523000" />
-      <workItem from="1516409871271" duration="6517000" />
+      <workItem from="1516409871271" duration="6580000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8040000" />
+    <option name="totallyTimeSpent" value="8103000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="85" width="1366" height="706" extended-state="6" />
@@ -614,11 +611,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AppBundle/Controller/CorridorController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="92" column="5" lean-forward="false" selection-start-line="92" selection-start-column="5" selection-end-line="92" selection-end-column="5" />
-          <folding>
-            <element signature="e#40#70#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="108">
+          <caret line="6" column="45" lean-forward="false" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
+          <folding />
         </state>
       </provider>
     </entry>
