@@ -73,7 +73,7 @@ class BuildingController extends Controller {
     /**
      * @ApiDoc(
      *    section = "Building",
-     *    description="Return a building by id"
+     *    description="Finds and displays a building entity"
      * )
      *
      *

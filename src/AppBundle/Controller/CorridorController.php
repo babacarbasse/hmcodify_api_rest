@@ -4,44 +4,60 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Corridor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
-/**
- * Corridor controller.
- *
- * @Route("corridor")
- */
+
 class CorridorController extends Controller
 {
+
     /**
-     * Lists all corridor entities.
+     * @ApiDoc(
+     *    section = "Corridor",
+     *    description="Lists all corridor entities."
+     * )
      *
-     * @Route("/", name="corridor_index")
-     * @Method("GET")
+     *
+     * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"corridor"})
+     * @Rest\Get("/corridors")
      */
-    public function indexAction()
+    public function getCorridorsAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $corridors = $em->getRepository('AppBundle:Corridor')->findAll();
-
-        return $this->render('corridor/index.html.twig', array(
-            'corridors' => $corridors,
-        ));
+        return $corridors = $em->getRepository('AppBundle:Corridor')->findAll();
     }
 
     /**
-     * Creates a new corridor entity.
+     * @ApiDoc(
+     *    section = "Corridor",
+     *    description="Creates a new corridor entity.",
+     *    input={
+     *      "class" = "AppBundle\Form\CorridorType",
+     *      "name" = ""
+     *    },
+     *    output= {
+     *      "class" = "Corridor",
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *      "groups"={""}
+     *     },
+     *    responseMap={
+     *         200 = {"class"=Corridor::class, "groups"={}},
+     *         400 = {"class"=CorridorType::class, "form_errors"=true, "name" = ""}
+     *    },
+     *    statusCodes={
+     *         201="Success",
+     *         400="Form error",
+     *         500="Server error"
+     *     }
+     * )
      *
-     * @Route("/new", name="corridor_new")
-     * @Method({"GET", "POST"})
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"corridor"})
+     * @Rest\Post("/corridors")
      */
-    public function newAction(Request $request)
+    public function postCorridorAction(Request $request)
     {
         $corridor = new Corridor();
         $form = $this->createForm('AppBundle\Form\CorridorType', $corridor);
@@ -52,89 +68,28 @@ class CorridorController extends Controller
             $em->persist($corridor);
             $em->flush();
 
-            return $this->redirectToRoute('corridor_show', array('id' => $corridor->getId()));
+            return $corridor;
+        } else {
+            return $form;
         }
-
-        return $this->render('corridor/new.html.twig', array(
-            'corridor' => $corridor,
-            'form' => $form->createView(),
-        ));
     }
 
     /**
-     * Finds and displays a corridor entity.
+     * @ApiDoc(
+     *    section = "Corridor",
+     *    description="Finds and displays a corridor entity"
+     * )
      *
-     * @Route("/{id}", name="corridor_show")
-     * @Method("GET")
+     *
+     * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"corridor"})
+     * @Rest\Get("/corridors/{id}")
      */
-    public function showAction(Corridor $corridor)
+    public function getCorridorAction(Request $request)
     {
-        $deleteForm = $this->createDeleteForm($corridor);
-
-        return $this->render('corridor/show.html.twig', array(
-            'corridor' => $corridor,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        $orm = $this->getDoctrine()->getManager();
+        return $orm->getRepository('AppBundle:Corridor')->findOneBy(
+            array("id" => $request->get('id'))
+        );
     }
 
-    /**
-     * Displays a form to edit an existing corridor entity.
-     *
-     * @Route("/{id}/edit", name="corridor_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, Corridor $corridor)
-    {
-        $deleteForm = $this->createDeleteForm($corridor);
-        $editForm = $this->createForm('AppBundle\Form\CorridorType', $corridor);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('corridor_edit', array('id' => $corridor->getId()));
-        }
-
-        return $this->render('corridor/edit.html.twig', array(
-            'corridor' => $corridor,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Deletes a corridor entity.
-     *
-     * @Route("/{id}", name="corridor_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, Corridor $corridor)
-    {
-        $form = $this->createDeleteForm($corridor);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($corridor);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('corridor_index');
-    }
-
-    /**
-     * Creates a form to delete a corridor entity.
-     *
-     * @param Corridor $corridor The corridor entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Corridor $corridor)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('corridor_delete', array('id' => $corridor->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
-    }
 }
