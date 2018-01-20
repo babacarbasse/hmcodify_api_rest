@@ -1,11 +1,21 @@
 imports:
-    - { resource: parameters.yml }
+#    - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    database_host: 91.134.139.234
+    database_port: 3306
+    database_name: hmcodify
+    database_user: basse
+    database_password: f$##53!qsgMiUEKFvwWQDDXw248oyG
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: e99362975ce1bbb3e17dd57d31a2d7f20beb51fe
     locale: en
     jms_serializer.camel_case_naming_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
 
