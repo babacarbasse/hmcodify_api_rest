@@ -105,6 +105,14 @@ class Student
      */
     private $gender;
 
+    /**
+     * @var Codification
+     *
+     * @ORM\OneToOne(targetEntity="Codification", mappedBy="student")
+     *
+     */
+    public $codification;
+
 
     /**
      * Get id
@@ -402,5 +410,29 @@ class Student
     public function getGender()
     {
         return $this->gender;
+    }
+
+    /**
+     * Set codification.
+     *
+     * @param \AppBundle\Entity\Codification|null $codification
+     *
+     * @return Student
+     */
+    public function setCodification(\AppBundle\Entity\Codification $codification = null)
+    {
+        $this->codification = $codification;
+
+        return $this;
+    }
+
+    /**
+     * Get codification.
+     *
+     * @return \AppBundle\Entity\Codification|null
+     */
+    public function getCodification()
+    {
+        return $this->codification;
     }
 }

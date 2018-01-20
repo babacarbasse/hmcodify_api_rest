@@ -52,6 +52,14 @@ class Position
     public $hasConstraint;
 
     /**
+     * @var Codification
+     *
+     * @ORM\OneToOne(targetEntity="Codification", mappedBy="position")
+     *
+     */
+    public $codification;
+
+    /**
      * Get id
      *
      * @return int
@@ -155,5 +163,29 @@ class Position
     public function getHasConstraint()
     {
         return $this->hasConstraint;
+    }
+
+    /**
+     * Set codification.
+     *
+     * @param \AppBundle\Entity\Codification|null $codification
+     *
+     * @return Position
+     */
+    public function setCodification(\AppBundle\Entity\Codification $codification = null)
+    {
+        $this->codification = $codification;
+
+        return $this;
+    }
+
+    /**
+     * Get codification.
+     *
+     * @return \AppBundle\Entity\Codification|null
+     */
+    public function getCodification()
+    {
+        return $this->codification;
     }
 }

@@ -105,6 +105,14 @@ class Student
      */
     private $gender;
 
+    /**
+     * @var Codification
+     *
+     * @ORM\OneToOne(targetEntity="Codification", mappedBy="student")
+     *
+     */
+    public $codification;
+
 
     /**
      * Get id
@@ -404,4 +412,3 @@ class Student
         return $this->gender;
     }
 }
-
