@@ -44,6 +44,13 @@ class Corridor
      */
     public $floor;
 
+    /**
+     * @var HasConstraint
+     *
+     * @ORM\OneToOne(targetEntity="HasConstraint")
+     */
+    public $hasConstraint;
+
 
     /**
      * Get id
@@ -126,5 +133,28 @@ class Corridor
     {
         return $this->floor;
     }
-}
 
+    /**
+     * Set hasConstraint.
+     *
+     * @param \AppBundle\Entity\HasConstraint|null $hasConstraint
+     *
+     * @return Corridor
+     */
+    public function setHasConstraint(\AppBundle\Entity\HasConstraint $hasConstraint = null)
+    {
+        $this->hasConstraint = $hasConstraint;
+
+        return $this;
+    }
+
+    /**
+     * Get hasConstraint.
+     *
+     * @return \AppBundle\Entity\HasConstraint|null
+     */
+    public function getHasConstraint()
+    {
+        return $this->hasConstraint;
+    }
+}

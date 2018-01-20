@@ -1,3 +1,7 @@
+app_has_constraint:
+    resource: "@AppBundle/Controller/HasConstraintController.php"
+    type:     rest
+
 app_student:
     resource: "@AppBundle/Controller/StudentController.php"
     type:     rest

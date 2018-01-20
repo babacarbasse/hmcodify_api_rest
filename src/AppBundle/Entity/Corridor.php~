@@ -2,21 +2,17 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Building
+ * Corridor
  *
- * @ORM\Table(name="building")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\BuildingRepository")
+ * @ORM\Table(name="corridor")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CorridorRepository")
  */
-class Building {
-
-    public function __construct() {
-        $this->floors = new ArrayCollection();
-    }
-
+class Corridor
+{
     /**
      * @var int
      *
@@ -29,7 +25,7 @@ class Building {
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=30, unique=true)
+     * @ORM\Column(name="title", type="string", length=30)
      */
     private $title;
 
@@ -41,11 +37,12 @@ class Building {
     private $description;
 
     /**
-     * @var ArrayCollection building floors
+     * @var Floor the floor of the corridor
      *
-     * @ORM\OneToMany(targetEntity="Floor", mappedBy="building")
+     * @ORM\ManyToOne(targetEntity="Floor", inversedBy="corridors")
+     * @Assert\NotBlank
      */
-    public $floors;
+    public $floor;
 
     /**
      * @var HasConstraint
@@ -53,6 +50,7 @@ class Building {
      * @ORM\OneToOne(targetEntity="HasConstraint")
      */
     public $hasConstraint;
+
 
     /**
      * Get id
@@ -69,7 +67,7 @@ class Building {
      *
      * @param string $title
      *
-     * @return Building
+     * @return Corridor
      */
     public function setTitle($title)
     {
@@ -93,7 +91,7 @@ class Building {
      *
      * @param string $description
      *
-     * @return Building
+     * @return Corridor
      */
     public function setDescription($description)
     {
@@ -113,60 +111,27 @@ class Building {
     }
 
     /**
-     * Add floor
+     * Set floor
      *
      * @param Floor $floor
      *
-     * @return Building
+     * @return Corridor
      */
-    public function addFloor(Floor $floor)
+    public function setFloor(Floor $floor = null)
     {
-        $this->floors[] = $floor;
+        $this->floor = $floor;
 
         return $this;
     }
 
     /**
-     * Remove floor
+     * Get floor
      *
-     * @param Floor $floor
+     * @return Floor
      */
-    public function removeFloor(Floor $floor)
+    public function getFloor()
     {
-        $this->floors->removeElement($floor);
-    }
-
-    /**
-     * Get floors
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFloors()
-    {
-        return $this->floors;
-    }
-
-    /**
-     * Set hasConstraint.
-     *
-     * @param \AppBundle\Entity\HasConstraint|null $hasConstraint
-     *
-     * @return Building
-     */
-    public function setHasConstraint(\AppBundle\Entity\HasConstraint $hasConstraint = null)
-    {
-        $this->hasConstraint = $hasConstraint;
-
-        return $this;
-    }
-
-    /**
-     * Get hasConstraint.
-     *
-     * @return \AppBundle\Entity\HasConstraint|null
-     */
-    public function getHasConstraint()
-    {
-        return $this->hasConstraint;
+        return $this->floor;
     }
 }
+

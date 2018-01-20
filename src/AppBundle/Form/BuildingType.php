@@ -16,6 +16,7 @@ class BuildingType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
+            ->add('hasConstraint')
         ;
     }
     

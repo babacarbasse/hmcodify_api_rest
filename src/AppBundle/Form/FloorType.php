@@ -16,7 +16,8 @@ class FloorType extends AbstractType
         $builder
             ->add('description')
             ->add('number')
-            ->add('building');
+            ->add('building')
+            ->add('hasConstraint');
     }/**
      * {@inheritdoc}
      */

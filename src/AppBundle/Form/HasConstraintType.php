@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PositionType extends AbstractType
+class HasConstraintType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -14,19 +14,17 @@ class PositionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('description')
-            ->add('number')
-            ->add('room')
-            ->add('hasConstraint');
+            ->add('genderOccupation')
+            ->add('optionOccupation')
+            ->add('departementOccupation')
+            ->add('classLevelOccupation');
     }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Position',
-            'csrf_protection' => false,
-            'allow_extra_fields' => true
+            'data_class' => 'AppBundle\Entity\HasConstraint'
         ));
     }
 
@@ -35,7 +33,7 @@ class PositionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_position';
+        return 'appbundle_hasconstraint';
     }
 
 

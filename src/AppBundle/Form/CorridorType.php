@@ -16,7 +16,9 @@ class CorridorType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
-            ->add('floor');
+            ->add('floor')
+            ->add('hasConstraint')
+        ;
     }/**
      * {@inheritdoc}
      */

@@ -16,7 +16,8 @@ class RoomType extends AbstractType
         $builder
             ->add('occupancyLimit')
             ->add('reservedBy')
-            ->add('positionsTaken');
+            ->add('positionsTaken')
+            ->add('hasConstraint');
     }/**
      * {@inheritdoc}
      */
