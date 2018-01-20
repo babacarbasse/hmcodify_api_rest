@@ -1,3 +1,7 @@
+app_corridor:
+    resource: "@AppBundle/Controller/CorridorController.php"
+    type:     annotation
+
 nelmio-api-doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /documentation
