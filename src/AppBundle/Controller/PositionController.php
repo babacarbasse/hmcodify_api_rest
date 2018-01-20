@@ -9,7 +9,9 @@
 namespace AppBundle\Controller;
 
 
-class PositionController
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class PositionController extends Controller
 {
 
 }

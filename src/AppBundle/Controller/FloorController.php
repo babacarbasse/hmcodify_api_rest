@@ -9,7 +9,9 @@
 namespace AppBundle\Controller;
 
 
-class FloorController
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class FloorController extends Controller
 {
 
 }

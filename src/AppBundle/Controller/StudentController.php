@@ -9,7 +9,9 @@
 namespace AppBundle\Controller;
 
 
-class StudentController
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class StudentController extends Controller
 {
 
 }

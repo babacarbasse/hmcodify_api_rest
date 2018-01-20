@@ -9,7 +9,9 @@
 namespace AppBundle\Controller;
 
 
-class RoomController
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class RoomController extends Controller
 {
 
 }
