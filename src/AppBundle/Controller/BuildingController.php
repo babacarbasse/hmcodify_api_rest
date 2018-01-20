@@ -109,4 +109,57 @@ class BuildingController extends Controller {
         return;
     }
 
+
+    /**
+     * @ApiDoc(
+     *    section = "Building",
+     *    description="Update entity building",
+     *    input={
+     *      "class" = "AppBundle\Form\BuildingType",
+     *      "name" = ""
+     *    },
+     *    output= {
+     *      "class" = "Building",
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *      "groups"={""}
+     *     },
+     *    responseMap={
+     *         200 = {"class"=Building::class, "groups"={}},
+     *         400 = {"class"=BuildingType::class, "form_errors"=true, "name" = ""}
+     *    },
+     *    statusCodes={
+     *         201="Success",
+     *         400="Form error",
+     *         500="Server error"
+     *     }
+     * )
+     *
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={})
+     * @Rest\Put("/buildings/{id}")
+     */
+    public function putBuildingAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('AppBundle:Building')->findOneBy(
+            array("id" => $request->get('id'))
+        );
+
+        if(empty($data)) {
+            return $this->resourceNotFound();
+        }
+
+        $form = $this->createForm('AppBundle\Form\BuildingType', $data, []);
+
+        $form->submit($request->request->all(), false);
+
+        if ($form->isValid()) {
+            $em->flush();
+            return $data;
+        } else {
+            return $form;
+        }
+    }
+
+    public function resourceNotFound() {
+        return \FOS\RestBundle\View\View::create(['message' => 'Resource not found'], Response::HTTP_NOT_FOUND);
+    }
 }

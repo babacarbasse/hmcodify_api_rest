@@ -91,4 +91,79 @@ class StudentController extends Controller
             array("id" => $request->get('id'))
         );
     }
+
+    /**
+     * @ApiDoc(
+     *    section = "Student",
+     *    description="Remove a student"
+     * )
+     *
+     *
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT, serializerGroups={"student"})
+     * @Rest\Delete("/students/{id}")
+     */
+    public function removeStudentAction(Request $request)
+    {
+        $orm = $this->getDoctrine()->getManager();
+        $student = $orm->getRepository('AppBundle:Student')->findOneBy(
+            array("id" => $request->get('id'))
+        );
+        $orm->remove($student);
+        $orm->flush();
+        return;
+    }
+
+
+    /**
+     * @ApiDoc(
+     *    section = "Student",
+     *    description="Update entity student",
+     *    input={
+     *      "class" = "AppBundle\Form\StudentType",
+     *      "name" = ""
+     *    },
+     *    output= {
+     *      "class" = "Student",
+     *      "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"},
+     *      "groups"={""}
+     *     },
+     *    responseMap={
+     *         200 = {"class"=Student::class, "groups"={}},
+     *         400 = {"class"=StudentType::class, "form_errors"=true, "name" = ""}
+     *    },
+     *    statusCodes={
+     *         201="Success",
+     *         400="Form error",
+     *         500="Server error"
+     *     }
+     * )
+     *
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={})
+     * @Rest\Put("/students/{id}")
+     */
+    public function putStudentAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('AppBundle:Student')->findOneBy(
+            array("id" => $request->get('id'))
+        );
+
+        if(empty($data)) {
+            return $this->resourceNotFound();
+        }
+
+        $form = $this->createForm('AppBundle\Form\StudentType', $data, []);
+
+        $form->submit($request->request->all(), false);
+
+        if ($form->isValid()) {
+            $em->flush();
+            return $data;
+        } else {
+            return $form;
+        }
+    }
+
+    public function resourceNotFound() {
+        return \FOS\RestBundle\View\View::create(['message' => 'Resource not found'], Response::HTTP_NOT_FOUND);
+    }
 }
