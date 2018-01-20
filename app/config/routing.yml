@@ -1,11 +1,27 @@
+app_student:
+    resource: "@AppBundle/Controller/StudentController.php"
+    type:     rest
+
+app_room:
+    resource: "@AppBundle/Controller/RoomController.php"
+    type:     rest
+
+app_position:
+    resource: "@AppBundle/Controller/PositionController.php"
+    type:     rest
+
+app_floor:
+    resource: "@AppBundle/Controller/FloorController.php"
+    type:     rest
+
 app_corridor:
     resource: "@AppBundle/Controller/CorridorController.php"
-    type:     annotation
+    type:     rest
 
 nelmio-api-doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /documentation
 
-buildings:
+app_building:
     type:     rest
     resource: AppBundle\Controller\BuildingController
